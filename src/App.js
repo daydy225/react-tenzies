@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { nanoid } from 'nanoid';
+import Confetti from 'react-confetti';
 import Die from './Die'
 import './reset.css'
 import './styles.css'
@@ -11,9 +12,17 @@ export default function App() {
     // Tenzies state correspont au moment le joueur terniner le jeu.
     const [tenzies, setTenzies] = useState(false)
 
-useEffect(()=> {
     //  Regarde a chaque changement d'etat des des
-    console.log("dice state changed")
+useEffect(()=> {
+    // Quand tous les boutons  on ete cliquer et ont la meme valeur
+    const allHeld = dice.every(die => die.isheld) 
+    const firstValue = dice[0].value 
+    const allSameValue = dice.every(die => die.value === firstValue)
+     if (allHeld && allSameValue) {
+         setTenzies(true)
+         
+     }
+
 },[dice])   
      
     
@@ -40,10 +49,17 @@ useEffect(()=> {
 
 // Tous les des seront rouler sauf les des maintenu en veryt
 function rollDice() {
-    setDice(oldDice => oldDice.map(die => {
-        return die.isheld ? die : generateNewDice()
-    }))
-}
+     if(!tenzies) {
+         setDice(oldDice => oldDice.map(die => {
+             return die.isheld ? die : generateNewDice()
+         }))
+     }else {
+         setTenzies(false)
+         setDice(allNewDice())
+     }
+         
+     }
+
  
 //Les des dont les numeros seront maintenus s'afficheront en vert
 function holdDice(id) {
@@ -65,9 +81,9 @@ function holdDice(id) {
    
 
 
-
     return (
         <main>
+            {tenzies && <Confetti />}
             <div>
             <h1 className="tenzies--title">Tenzies</h1>
             <p className="tenzies-desc">
@@ -78,11 +94,22 @@ function holdDice(id) {
             <div className="dices">
                 {diceElements}
             </div>
-            <button className="roll-dice"
-            onClick={rollDice}
-            >
+            { 
+             !tenzies ?
+                <button 
+                className="roll-dice"
+                onClick={rollDice}
+                 >
                 Roll
-            </button>
+                </button>
+                :
+                <button 
+                className="roll-dice"
+                onClick={rollDice}
+                >
+                <img src="./images/replay.png"  className="replay"/>
+                New Game
+            </button>}
         </main>
     )
 }

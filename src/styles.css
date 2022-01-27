@@ -68,7 +68,7 @@ main {
 }
 
 .roll-dice {
-   width: 6.5em;
+   width: 8.5em;
    height: 3.1em;
    font-size: 1.1em;
    color: #fff;
@@ -77,6 +77,13 @@ main {
    border-radius: .3rem;
    box-shadow: 0px 3.2px 7.68px rgba(0, 0, 0, 0.18);
    cursor: pointer;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.replay {
+    margin-right: .3rem;
 }
 
 .roll-dice:focus {
